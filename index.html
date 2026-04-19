@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2C Protocol v2.0 — Agent-to-Agent Skill Transfer</title>
+<meta name="description" content="C2C Protocol: agent-to-agent skill transfer via human relay. Works with Claude Code, Codex, OpenClaw, and any agent that runs shell commands.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;background:#0a0a1a;color:#e6e6f0;line-height:1.65}
+  a{color:#7dd3fc;text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:'SF Mono',Monaco,Menlo,Consolas,monospace;background:#181830;padding:2px 6px;border-radius:4px;font-size:0.92em;color:#f0abfc}
+  pre{background:#10102a;border:1px solid #23234a;border-radius:8px;padding:16px;overflow-x:auto;margin:12px 0;font-size:0.9em;line-height:1.55}
+  pre code{background:none;padding:0;color:#e6e6f0}
+  h1,h2,h3{color:#ffffff;margin:1.6em 0 0.6em;line-height:1.25}
+  h1{font-size:2.4rem;margin-top:0}
+  h2{font-size:1.7rem;border-bottom:1px solid #23234a;padding-bottom:0.3em}
+  h3{font-size:1.15rem;color:#c4b5fd}
+  p{margin:0.7em 0}
+  ul{margin:0.7em 0 0.7em 1.4em}
+  li{margin:0.25em 0}
+  .wrap{max-width:860px;margin:0 auto;padding:48px 24px 80px}
+  header{text-align:center;padding:32px 0 16px;border-bottom:1px solid #23234a;margin-bottom:24px}
+  header .tag{display:inline-block;background:linear-gradient(90deg,#6366f1,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700;font-size:0.9rem;letter-spacing:0.12em;text-transform:uppercase}
+  header h1{margin:8px 0 6px;font-size:2.6rem}
+  header .sub{color:#a0a0c0;font-size:1.05rem;max-width:640px;margin:0 auto}
+  .lang-toggle{position:sticky;top:0;z-index:10;background:#0a0a1a;border-bottom:1px solid #23234a;padding:10px 0;text-align:center;margin:-48px -24px 24px}
+  .lang-toggle a{margin:0 12px;color:#a0a0c0;font-size:0.95rem}
+  .lang-toggle a.active{color:#fff;font-weight:600}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.95em}
+  th,td{border:1px solid #23234a;padding:8px 12px;text-align:left;vertical-align:top}
+  th{background:#181830;color:#fff;font-weight:600}
+  tr:nth-child(even) td{background:#0f0f24}
+  hr{border:none;border-top:1px solid #23234a;margin:40px 0}
+  footer{text-align:center;color:#707090;font-size:0.9rem;margin-top:48px;padding-top:24px;border-top:1px solid #23234a}
+  .bar-badge{display:inline-block;background:#181830;border:1px solid #23234a;color:#c4b5fd;padding:2px 10px;border-radius:999px;font-size:0.8rem;margin-right:6px}
+  @media (max-width:640px){
+    header h1{font-size:2rem}
+    h1{font-size:2rem}
+    h2{font-size:1.4rem}
+    .wrap{padding:24px 16px 48px}
+    .lang-toggle{margin:-24px -16px 16px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lang-toggle">
+    <a href="#top" class="active">English</a>
+    <span style="color:#404060">|</span>
+    <a href="#cn">中文</a>
+    <span style="color:#404060">|</span>
+    <a href="https://github.com/qiaoy01/c2cprotocol">GitHub</a>
+  </div>
+
+  <header id="top">
+    <div class="tag">C2C Protocol v2.0</div>
+    <h1>Agent-to-Agent Skill Transfer</h1>
+    <p class="sub">Skills move between AI coding agents by a human relaying a short Notes block on any IM platform. Works with Claude Code, Codex, OpenClaw, and anything else that runs shell commands.</p>
+    <p style="margin-top:14px">
+      <span class="bar-badge">AES-256</span>
+      <span class="bar-badge">Human-in-the-loop</span>
+      <span class="bar-badge">Any IM</span>
+      <span class="bar-badge">Zero deps</span>
+    </p>
+  </header>
+
+  <h2>What is C2C?</h2>
+  <p>C2C is a protocol for transferring a skill — a folder of code + docs — from one AI coding agent to another, by having a human relay a short "Notes" block between them on any IM platform.</p>
+  <ul>
+    <li><strong>No direct agent-to-agent network connection.</strong> The sender never talks to the receiver's machine.</li>
+    <li><strong>The human is the router.</strong> The admin copy-pastes one Notes block — that's the entire transfer channel.</li>
+    <li><strong>AES-256 encrypted.</strong> The skill payload is encrypted; only the receiver agent (with the password from Notes) can decrypt.</li>
+    <li><strong>Auto-expires.</strong> The encrypted package is deleted within 10 minutes – 24 hours.</li>
+  </ul>
+
+  <h2>Reference implementation: lobster-distill</h2>
+  <p>The canonical implementation is at <a href="https://github.com/qiaoy01/lobster-distill">github.com/qiaoy01/lobster-distill</a>. Everything needed to install and use it is on this page — no cross-page navigation required.</p>
+
+  <h2>Install (any agent)</h2>
+  <p>Fetch the two shell scripts directly from the qiaoy01 repo:</p>
+  <pre><code>mkdir -p skills/lobster-distill
+cd skills/lobster-distill
+curl -fsSL -O https://raw.githubusercontent.com/qiaoy01/lobster-distill/main/share.sh
+curl -fsSL -O https://raw.githubusercontent.com/qiaoy01/lobster-distill/main/receive.sh
+curl -fsSL -O https://raw.githubusercontent.com/qiaoy01/lobster-distill/main/SKILL.md
+chmod +x share.sh receive.sh</code></pre>
+  <p>Dependencies: <code>openssl</code>, <code>curl</code>, <code>tar</code> (system built-in, no install step).</p>
+
+  <h2>Send a skill</h2>
+  <p>From the agent's working directory:</p>
+  <pre><code>bash skills/lobster-distill/share.sh &lt;skill-dir-or-file&gt; "short description"</code></pre>
+  <p><code>share.sh</code> packs the target into tar.gz, encrypts it with AES-256-CBC + PBKDF2, uploads to temporary storage (primary: <code>c2cprotocol.org/share</code>, 10-min expiry; fallback: <code>litterbox.catbox.moe</code>, 24h), and prints a Notes block with two clearly separated sections:</p>
+  <ul>
+    <li><code>═══ FOR ADMIN ═══</code> — summary for the human</li>
+    <li><code>═══ FOR TARGET AGENT ═══</code> — ready-to-run <code>curl</code> + <code>openssl</code> + <code>tar</code> commands</li>
+  </ul>
+  <p>The admin forwards the entire block (long-press → forward, copy-paste, or even read aloud on a call) to the target agent over any text channel: Telegram, WeChat, Discord, Signal, Email, SMS, etc.</p>
+
+  <h2>Receive a skill</h2>
+  <p>The target agent runs the commands inline from the Notes (they're standard <code>curl</code>/<code>openssl</code>/<code>tar</code>), or uses the helper:</p>
+  <pre><code>bash skills/lobster-distill/receive.sh &lt;URL&gt; &lt;password&gt; &lt;skill-name&gt; tar</code></pre>
+  <p>The skill is extracted into <code>skills/&lt;skill-name&gt;/</code>.</p>
+
+  <h2>Workflow</h2>
+  <pre><code>Sender Agent          Human Admin           Receiver Agent
+     │                    │                       │
+     │ 1. share.sh        │                       │
+     │ 2. Print Notes ──→ │                       │
+     │                    │ 3. Forward Notes ───→ │
+     │                    │    (any IM / email)   │
+     │                    │                       │ 4. receive.sh
+     │                    │                       │ 5. Skill installed ✅</code></pre>
+
+  <h2>Agent-specific install paths</h2>
+  <p>All agents use the same scripts. The <code>skills/</code> directory convention is what differs:</p>
+  <h3>Claude Code</h3>
+  <ul>
+    <li>User-level: <code>~/.claude/skills/&lt;name&gt;/</code></li>
+    <li>Project-level: <code>.claude/skills/&lt;name&gt;/</code></li>
+    <li>Run <code>share.sh</code> / <code>receive.sh</code> in any shell; Claude Code picks up new skills on the next session.</li>
+  </ul>
+  <h3>Codex</h3>
+  <ul>
+    <li>Keep skills under <code>skills/&lt;name&gt;/</code> in the project root and reference them from your prompt or config.</li>
+  </ul>
+  <h3>OpenClaw</h3>
+  <ul>
+    <li>Skills live at <code>skills/&lt;name&gt;/</code> in the agent's working directory — <code>share.sh</code> and <code>receive.sh</code> default to this layout.</li>
+  </ul>
+  <h3>Any other agent</h3>
+  <ul>
+    <li>If it can run a shell command, it can use C2C. Point the tar extraction (<code>tar xzf ... -C &lt;dir&gt;</code>) at wherever your agent reads skills from.</li>
+  </ul>
+
+  <h2>Security</h2>
+  <ul>
+    <li><strong>Encryption:</strong> AES-256-CBC + PBKDF2 + random salt. 24-char base64 one-time password, embedded in Notes.</li>
+    <li><strong>Human-in-the-loop:</strong> Nothing moves without the admin explicitly forwarding the Notes. The admin sees the full content first.</li>
+    <li><strong>No agent-to-agent network link.</strong> Unlike API-based protocols (e.g., Google A2A), the sender and receiver never connect directly.</li>
+    <li><strong>Commands are visible.</strong> The Notes contain plain <code>curl</code> / <code>openssl</code> / <code>tar</code> invocations — the receiver agent (or the human) can inspect each step before running.</li>
+    <li><strong>Temp-file cleanup.</strong> <code>share.sh</code> and <code>receive.sh</code> only remove their own files under <code>/tmp/</code>.</li>
+  </ul>
+
+  <h2>Comparison</h2>
+  <table>
+    <thead><tr><th>Feature</th><th>C2C (lobster-distill)</th><th>Google A2A</th><th>Package registry</th></tr></thead>
+    <tbody>
+      <tr><td>Works across IM platforms</td><td>✅ Any text channel</td><td>❌ API only</td><td>✅ Web only</td></tr>
+      <tr><td>Human oversight</td><td>✅ Required</td><td>❌ Direct AI-to-AI</td><td>❌ Auto-install</td></tr>
+      <tr><td>Private / unpublished skills</td><td>✅ Point-to-point</td><td>❌ Needs API access</td><td>❌ Public only</td></tr>
+      <tr><td>Encryption</td><td>✅ AES-256</td><td>Depends</td><td>❌ Plain</td></tr>
+      <tr><td>Dependencies</td><td>None (<code>openssl</code>, <code>curl</code>, <code>tar</code>)</td><td>SDK + API server</td><td>Package manager + net</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <header id="cn">
+    <div class="tag">C2C 协议 v2.0</div>
+    <h1>智能体之间的技能传授</h1>
+    <p class="sub">技能在 AI 编码智能体之间通过人类转发一段简短的 Notes 传授，任意 IM 平台皆可。适用于 Claude Code、Codex、OpenClaw 以及任何能执行 shell 命令的智能体。</p>
+  </header>
+
+  <h2>C2C 是什么？</h2>
+  <p>C2C 是一个协议，用于把一个技能（一个代码+文档的目录）从一个 AI 编码智能体传授到另一个，由人类在任意 IM 平台上转发一段简短的 Notes 完成。</p>
+  <ul>
+    <li><strong>智能体之间没有直接网络连接</strong>：发送方从不与接收方的机器通信</li>
+    <li><strong>人类即路由器</strong>：管理员复制粘贴 Notes — 这就是完整的传输通道</li>
+    <li><strong>AES-256 加密</strong>：技能包已加密，只有拿到 Notes 中密码的接收方智能体能解密</li>
+    <li><strong>自动过期</strong>：加密包在 10 分钟 – 24 小时内自动删除</li>
+  </ul>
+
+  <h2>参考实现：lobster-distill</h2>
+  <p>官方实现位于 <a href="https://github.com/qiaoy01/lobster-distill">github.com/qiaoy01/lobster-distill</a>。本页包含安装和使用所需的完整说明 — 无需跨页查看。</p>
+
+  <h2>安装（任意智能体）</h2>
+  <p>直接从 qiaoy01 仓库获取两个 shell 脚本：</p>
+  <pre><code>mkdir -p skills/lobster-distill
+cd skills/lobster-distill
+curl -fsSL -O https://raw.githubusercontent.com/qiaoy01/lobster-distill/main/share.sh
+curl -fsSL -O https://raw.githubusercontent.com/qiaoy01/lobster-distill/main/receive.sh
+curl -fsSL -O https://raw.githubusercontent.com/qiaoy01/lobster-distill/main/SKILL.md
+chmod +x share.sh receive.sh</code></pre>
+  <p>依赖：<code>openssl</code>、<code>curl</code>、<code>tar</code>（系统自带，无需安装）。</p>
+
+  <h2>发送技能</h2>
+  <p>在智能体工作目录下运行：</p>
+  <pre><code>bash skills/lobster-distill/share.sh &lt;技能目录或文件&gt; "简要描述"</code></pre>
+  <p><code>share.sh</code> 会把目标打包为 tar.gz，用 AES-256-CBC + PBKDF2 加密，上传到临时存储（优先 <code>c2cprotocol.org/share</code>，10 分钟过期；失败 fallback 到 <code>litterbox.catbox.moe</code>，24 小时），并输出带两个清晰分隔块的 Notes：</p>
+  <ul>
+    <li><code>═══ 管理员请读 ═══</code> — 人类看的摘要</li>
+    <li><code>═══ 目标龙虾请读 ═══</code> — 可直接运行的 <code>curl</code>+<code>openssl</code>+<code>tar</code> 命令</li>
+  </ul>
+  <p>管理员将整段 Notes 原样转发（长按→转发、复制粘贴，甚至电话念给对方）给目标智能体，任意文本通道皆可：Telegram、微信、Discord、Signal、邮件、短信等。</p>
+
+  <h2>接收技能</h2>
+  <p>目标智能体可以直接运行 Notes 中的命令（标准 <code>curl</code>/<code>openssl</code>/<code>tar</code>），或使用辅助脚本：</p>
+  <pre><code>bash skills/lobster-distill/receive.sh &lt;URL&gt; &lt;密码&gt; &lt;技能名&gt; tar</code></pre>
+  <p>技能会安装到 <code>skills/&lt;技能名&gt;/</code>。</p>
+
+  <h2>工作流程</h2>
+  <pre><code>发送方              人类管理员             接收方
+  │                    │                    │
+  │ 1. share.sh        │                    │
+  │ 2. 输出 Notes ───→ │                    │
+  │                    │ 3. 转发 Notes ───→ │
+  │                    │   （任意 IM/邮件） │
+  │                    │                    │ 4. receive.sh
+  │                    │                    │ 5. 技能已安装 ✅</code></pre>
+
+  <h2>各智能体安装路径</h2>
+  <p>所有智能体使用同一套脚本，区别只在 <code>skills/</code> 目录约定：</p>
+  <h3>Claude Code</h3>
+  <ul>
+    <li>用户级：<code>~/.claude/skills/&lt;name&gt;/</code></li>
+    <li>项目级：<code>.claude/skills/&lt;name&gt;/</code></li>
+    <li>在任意 shell 会话运行 <code>share.sh</code> / <code>receive.sh</code>，Claude Code 在下次会话自动加载新技能。</li>
+  </ul>
+  <h3>Codex</h3>
+  <ul>
+    <li>将技能放在项目根的 <code>skills/&lt;name&gt;/</code>，在 prompt 或配置中引用。</li>
+  </ul>
+  <h3>OpenClaw</h3>
+  <ul>
+    <li>技能位于智能体工作目录的 <code>skills/&lt;name&gt;/</code>。<code>share.sh</code> 和 <code>receive.sh</code> 默认就是这个布局。</li>
+  </ul>
+  <h3>其他智能体</h3>
+  <ul>
+    <li>只要能运行 shell 命令就能用 C2C。把解压命令（<code>tar xzf ... -C &lt;目录&gt;</code>）的目标指向你的智能体读取技能的目录即可。</li>
+  </ul>
+
+  <h2>安全说明</h2>
+  <ul>
+    <li><strong>加密</strong>：AES-256-CBC + PBKDF2 + 随机 salt。24 字符 base64 一次性密码，嵌入 Notes。</li>
+    <li><strong>人类参与审核</strong>：没有管理员主动转发，什么都不会发。管理员在转发前能看到完整内容。</li>
+    <li><strong>无智能体直连</strong>：与基于 API 的协议（如 Google A2A）不同，发送方与接收方之间没有直接网络连接。</li>
+    <li><strong>命令可见</strong>：Notes 中是纯粹的 <code>curl</code> / <code>openssl</code> / <code>tar</code> 调用，接收方智能体（或人类）可以在执行前逐步审查。</li>
+    <li><strong>临时文件清理</strong>：<code>share.sh</code> 与 <code>receive.sh</code> 只清理自己在 <code>/tmp/</code> 下的文件。</li>
+  </ul>
+
+  <h2>对比</h2>
+  <table>
+    <thead><tr><th>特性</th><th>C2C (lobster-distill)</th><th>Google A2A</th><th>包管理器</th></tr></thead>
+    <tbody>
+      <tr><td>跨 IM 平台</td><td>✅ 任意文本通道</td><td>❌ 仅 API</td><td>✅ 仅 Web</td></tr>
+      <tr><td>人类审核</td><td>✅ 必须</td><td>❌ AI 直连</td><td>❌ 自动安装</td></tr>
+      <tr><td>私有/未发布技能</td><td>✅ 点对点</td><td>❌ 需 API 接入</td><td>❌ 仅公开</td></tr>
+      <tr><td>加密</td><td>✅ AES-256</td><td>取决于实现</td><td>❌ 明文</td></tr>
+      <tr><td>依赖</td><td>无（<code>openssl</code>、<code>curl</code>、<code>tar</code>）</td><td>SDK + API 服务</td><td>包管理器 + 网络</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    <p>MIT License · <a href="https://github.com/qiaoy01/c2cprotocol">github.com/qiaoy01/c2cprotocol</a> · <a href="https://github.com/qiaoy01/lobster-distill">github.com/qiaoy01/lobster-distill</a></p>
+  </footer>
+</div>
+</body>
+</html>
