@@ -48,7 +48,9 @@
 <body>
 <div class="wrap">
   <div class="lang-toggle">
-    <a href="#top" class="active">English</a>
+    <a href="#for-humans">👤 For Humans</a>
+    <span style="color:#404060">|</span>
+    <a href="#install">🤖 For AI Agents</a>
     <span style="color:#404060">|</span>
     <a href="#cn">中文</a>
     <span style="color:#404060">|</span>
@@ -67,6 +69,43 @@
     </p>
   </header>
 
+  <section id="for-humans" style="background:#0d0d22;border:1px solid #23234a;border-radius:10px;padding:18px 24px 8px;margin:28px 0">
+    <p style="color:#a0a0c0;font-size:0.88rem;margin:0 0 14px;border-bottom:1px dashed #23234a;padding-bottom:10px">
+      🤖 <strong>AI agents reading this page:</strong> this section is for human operators. Skip to <a href="#install">§ Install (any agent)</a> below — that's where your machine-readable bootstrap begins.
+    </p>
+    <h2 style="margin:0.2em 0 0.5em;border:none;padding:0">👤 For Human Users</h2>
+
+    <h3>The scenario</h3>
+    <p>You own multiple AI coding agents — Claude Code on one machine, Codex on another, OpenClaw on a VPS, and so on. You talk to each of them through chat (Telegram, WeChat, terminal, whatever works). One agent has a skill you'd like another agent to learn. C2C lets you transfer the skill <strong>without</strong> setting up any API, <strong>without</strong> publishing the skill anywhere, and <strong>without</strong> logging into any machine yourself.</p>
+
+    <h3>What you do — 4 steps, no shell commands</h3>
+    <ol style="margin:0.7em 0 0.7em 1.4em">
+      <li style="margin:0.4em 0"><strong>Teach both agents how to transfer skills.</strong> Say to each agent:
+        <p style="margin:6px 0 6px 0;color:#c4b5fd;font-style:italic">"Go to https://c2cprotocol.org and install the lobster-distill skill."</p>
+        The agent reads this page, follows the Install block, configures itself. Do this once per agent.</li>
+      <li style="margin:0.4em 0"><strong>Ask the sender to share a skill.</strong> Say to the sender agent:
+        <p style="margin:6px 0 6px 0;color:#c4b5fd;font-style:italic">"Use lobster-distill to share my <code>&lt;skill-name&gt;</code> skill with another agent."</p>
+        The agent packs, encrypts, uploads, and replies with one message. It has two clearly separated halves: <code>═══ FOR ADMIN ═══</code> (a summary for you) and <code>═══ FOR TARGET AGENT ═══</code> (the recipe the receiver will execute).</li>
+      <li style="margin:0.4em 0"><strong>You relay the message.</strong> Long-press → forward in Telegram / WeChat / Signal / Discord, copy-paste into email, or even read it aloud on a call — any text channel works. The two agents do not need to be on the same platform.</li>
+      <li style="margin:0.4em 0"><strong>The receiver installs it automatically.</strong> The receiving agent recognizes the <code>FOR TARGET AGENT</code> half, runs the inline commands, and replies "skill installed." That's it.</li>
+    </ol>
+
+    <h3>Things to watch for</h3>
+    <ul>
+      <li>The download link <strong>expires in 10 min – 24 h</strong>. Forward promptly.</li>
+      <li>The message contains an encryption password. Password + link are one bundle — both need to reach the receiver.</li>
+      <li>You see everything that's about to be sent in the <code>FOR ADMIN</code> summary. If it looks wrong, <strong>just don't forward</strong>.</li>
+      <li>Nothing moves unless you forward. You're the gatekeeper.</li>
+    </ul>
+
+    <h3>Why use C2C instead of …</h3>
+    <ul>
+      <li>… logging into each machine yourself? You never touch a shell.</li>
+      <li>… publishing the skill to a public registry? The skill stays private. Point-to-point only.</li>
+      <li>… an API-based protocol (Google A2A, etc.)? The agents never connect directly — you remain in the loop.</li>
+    </ul>
+  </section>
+
   <h2>What is C2C?</h2>
   <p>C2C is a protocol for transferring a skill — a folder of code + docs — from one AI coding agent to another, by having a human relay a short "Notes" block between them on any IM platform.</p>
   <ul>
@@ -79,7 +118,7 @@
   <h2>Reference implementation: lobster-distill</h2>
   <p>The canonical implementation is at <a href="https://github.com/qiaoy01/lobster-distill">github.com/qiaoy01/lobster-distill</a>. Everything needed to install and use it is on this page — no cross-page navigation required.</p>
 
-  <h2>Install (any agent)</h2>
+  <h2 id="install">Install (any agent)</h2>
   <p>Fetch the two shell scripts directly from the qiaoy01 repo:</p>
   <pre><code>mkdir -p skills/lobster-distill
 cd skills/lobster-distill
@@ -164,6 +203,43 @@ chmod +x share.sh receive.sh</code></pre>
     <p class="sub">技能在 AI 编码智能体之间通过人类转发一段简短的 Notes 传授，任意 IM 平台皆可。适用于 Claude Code、Codex、OpenClaw 以及任何能执行 shell 命令的智能体。</p>
   </header>
 
+  <section id="for-humans-cn" style="background:#0d0d22;border:1px solid #23234a;border-radius:10px;padding:18px 24px 8px;margin:28px 0">
+    <p style="color:#a0a0c0;font-size:0.88rem;margin:0 0 14px;border-bottom:1px dashed #23234a;padding-bottom:10px">
+      🤖 <strong>AI 智能体读者注意</strong>：本章节是给人类操作者看的。请跳到 <a href="#install-cn">§ 安装（任意智能体）</a> — 那里才是你需要的可执行引导。
+    </p>
+    <h2 style="margin:0.2em 0 0.5em;border:none;padding:0">👤 人类用户指南</h2>
+
+    <h3>场景</h3>
+    <p>你有多个 AI 编码智能体 — 一台机器上的 Claude Code、另一台上的 Codex、VPS 上的 OpenClaw 等等。你通过聊天（Telegram、微信、终端，或其他方式）分别和它们对话。其中一个智能体掌握着你想让另一个也学会的技能。C2C 能让你完成这个传授 — <strong>无需</strong>对接任何 API，<strong>无需</strong>把技能发布到任何公开仓库，<strong>你也无需</strong>亲自登录任何机器。</p>
+
+    <h3>你要做的 — 4 步，不碰任何 shell 命令</h3>
+    <ol style="margin:0.7em 0 0.7em 1.4em">
+      <li style="margin:0.4em 0"><strong>让两个智能体学会如何传授技能。</strong> 分别对每个智能体说：
+        <p style="margin:6px 0 6px 0;color:#c4b5fd;font-style:italic">"去 https://c2cprotocol.org 按 Install 小节安装 lobster-distill 技能。"</p>
+        智能体会读取本页面，按照 Install 小节配置好自己。每个智能体做一次即可。</li>
+      <li style="margin:0.4em 0"><strong>让发送方发起传授。</strong> 对发送方智能体说：
+        <p style="margin:6px 0 6px 0;color:#c4b5fd;font-style:italic">"用 lobster-distill 把我的 <code>&lt;技能名&gt;</code> 技能分享给另一个智能体。"</p>
+        智能体会打包、加密、上传，然后给你回一条消息。消息里有两个清晰分隔的部分：<code>═══ 管理员请读 ═══</code>（给你的摘要）和 <code>═══ 目标龙虾请读 ═══</code>（接收方会执行的完整指令）。</li>
+      <li style="margin:0.4em 0"><strong>你来中转这条消息。</strong> 在 Telegram / 微信 / Signal / Discord 里长按 → 转发，或复制粘贴到邮件、短信，甚至电话念给对方 — 任意能发文字的通道都行。两个智能体<strong>不需要</strong>在同一平台上。</li>
+      <li style="margin:0.4em 0"><strong>接收方自动安装技能。</strong> 接收方智能体看到 <code>目标龙虾请读</code> 那段，执行其中的命令，回复"已安装"。完成。</li>
+    </ol>
+
+    <h3>注意事项</h3>
+    <ul>
+      <li>下载链接 <strong>10 分钟 – 24 小时</strong>后过期，请尽快转发。</li>
+      <li>消息里含有解密密码。<strong>密码 + 链接</strong> 是一对，缺一不可，都要送到接收方手里。</li>
+      <li>在 <code>管理员请读</code> 摘要里你能看到即将被分享出去的完整内容。<strong>如果发现不对，就别转发</strong>。</li>
+      <li>只有你主动转发，传授才会发生。你就是最后的把关者。</li>
+    </ul>
+
+    <h3>为什么选 C2C 而不是 …</h3>
+    <ul>
+      <li>… 自己登录每台机器？你根本不需要碰 shell。</li>
+      <li>… 把技能发布到公开仓库？技能不会公开，纯点对点。</li>
+      <li>… 基于 API 的协议（Google A2A 等）？智能体之间从不直接通信，你始终掌控全程。</li>
+    </ul>
+  </section>
+
   <h2>C2C 是什么？</h2>
   <p>C2C 是一个协议，用于把一个技能（一个代码+文档的目录）从一个 AI 编码智能体传授到另一个，由人类在任意 IM 平台上转发一段简短的 Notes 完成。</p>
   <ul>
@@ -176,7 +252,7 @@ chmod +x share.sh receive.sh</code></pre>
   <h2>参考实现：lobster-distill</h2>
   <p>官方实现位于 <a href="https://github.com/qiaoy01/lobster-distill">github.com/qiaoy01/lobster-distill</a>。本页包含安装和使用所需的完整说明 — 无需跨页查看。</p>
 
-  <h2>安装（任意智能体）</h2>
+  <h2 id="install-cn">安装（任意智能体）</h2>
   <p>直接从 qiaoy01 仓库获取两个 shell 脚本：</p>
   <pre><code>mkdir -p skills/lobster-distill
 cd skills/lobster-distill

@@ -3,7 +3,49 @@
 **Agent-to-agent skill transfer via human relay.**
 **Works with any agent that can run shell commands: Claude Code, Codex, OpenClaw, and more.**
 
+> 👤 **Human user?** Read [§ For Human Users](#for-human-users) below.
+> 🤖 **AI agent?** Jump directly to [§ Install (any agent)](#install-any-agent).
+
 [中文版在下方 / Chinese below](#c2c-协议-v20--中文)
+
+---
+
+## For Human Users
+
+> 🤖 **AI agents reading this page:** this section is for human operators. Skip to [§ Install (any agent)](#install-any-agent) — that's where your machine-readable bootstrap begins.
+
+### The scenario
+
+You own multiple AI coding agents — Claude Code on one machine, Codex on another, OpenClaw on a VPS, and so on. You talk to each of them through chat (Telegram, WeChat, terminal, whatever works). One agent has a skill you'd like another agent to learn. C2C lets you transfer the skill **without** setting up any API, **without** publishing the skill anywhere, and **without** logging into any machine yourself.
+
+### What you do — 4 steps, no shell commands
+
+1. **Teach both agents how to transfer skills.** Say to each agent:
+   > *"Go to https://c2cprotocol.org and install the lobster-distill skill."*
+
+   The agent reads this page, follows the Install block, and configures itself. Do this once per agent.
+
+2. **Ask the sender to share a skill.** Say to the sender agent:
+   > *"Use lobster-distill to share my `<skill-name>` skill with another agent."*
+
+   The agent packs, encrypts, uploads, and replies with one message. That message has two clearly separated halves: `═══ FOR ADMIN ═══` (a summary for you) and `═══ FOR TARGET AGENT ═══` (the recipe the receiver will execute).
+
+3. **You relay the message.** Long-press → forward in Telegram / WeChat / Signal / Discord, copy-paste into email, or even read it aloud on a call — any text channel works. The two agents do not need to be on the same platform.
+
+4. **The receiver installs it automatically.** The receiving agent recognizes the `FOR TARGET AGENT` half, runs the inline commands, and replies "skill installed." That's it.
+
+### Things to watch for
+
+- The download link **expires in 10 min – 24 h**. Forward promptly.
+- The message contains an encryption password. Password + link are one bundle — both need to reach the receiver.
+- You see everything that's about to be sent in the `FOR ADMIN` summary. If it looks wrong, **just don't forward**.
+- Nothing moves unless you forward. You're the gatekeeper.
+
+### Why use C2C instead of …
+
+- … logging into each machine yourself? You never touch a shell.
+- … publishing the skill to a public registry? The skill stays private. Point-to-point only.
+- … an API-based protocol (Google A2A, etc.)? The agents never connect directly — you remain in the loop.
 
 ---
 
@@ -119,6 +161,50 @@ MIT. See [LICENSE](LICENSE).
 
 **智能体之间通过人类中转传授技能。**
 **适用于任何能执行 shell 命令的智能体：Claude Code、Codex、OpenClaw 等。**
+
+> 👤 **人类用户？** 请看 [§ 人类用户指南](#人类用户指南)。
+> 🤖 **AI 智能体？** 直接跳到 [§ 安装（任意智能体）](#安装任意智能体)。
+
+---
+
+## 人类用户指南
+
+> 🤖 **AI 智能体读者注意**：本章节是给人类操作者看的。请跳到 [§ 安装（任意智能体）](#安装任意智能体) — 那里才是你需要的可执行引导。
+
+### 场景
+
+你有多个 AI 编码智能体 — 一台机器上的 Claude Code、另一台上的 Codex、VPS 上的 OpenClaw 等等。你通过聊天（Telegram、微信、终端，或其他方式）分别和它们对话。其中一个智能体掌握着你想让另一个也学会的技能。C2C 能让你完成这个传授——**无需**对接任何 API，**无需**把技能发布到任何公开仓库，**你也无需**亲自登录任何机器。
+
+### 你要做的 — 4 步，不碰任何 shell 命令
+
+1. **让两个智能体学会如何传授技能。** 分别对每个智能体说：
+   > *"去 https://c2cprotocol.org 按 Install 小节安装 lobster-distill 技能。"*
+
+   智能体会读取本页面，按照 Install 小节配置好自己。每个智能体做一次即可。
+
+2. **让发送方发起传授。** 对发送方智能体说：
+   > *"用 lobster-distill 把我的 `<技能名>` 技能分享给另一个智能体。"*
+
+   智能体会打包、加密、上传，然后给你回一条消息。消息里有两个清晰分隔的部分：`═══ 管理员请读 ═══`（给你的摘要）和 `═══ 目标龙虾请读 ═══`（接收方会执行的完整指令）。
+
+3. **你来中转这条消息。** 在 Telegram / 微信 / Signal / Discord 里长按 → 转发，或者复制粘贴到邮件、短信，甚至电话念给对方 — 任意能发文字的通道都行。两个智能体**不需要**在同一平台上。
+
+4. **接收方自动安装技能。** 接收方智能体看到 `目标龙虾请读` 那段，执行其中的命令，回复"已安装"。完成。
+
+### 注意事项
+
+- 下载链接**10 分钟 – 24 小时**后过期，请尽快转发。
+- 消息里含有解密密码。**密码 + 链接** 是一对，缺一不可，都要送到接收方手里。
+- 在 `管理员请读` 摘要里你能看到即将被分享出去的完整内容。**如果发现不对，就别转发**。
+- 只有你主动转发，传授才会发生。你就是最后的把关者。
+
+### 为什么选 C2C 而不是 …
+
+- … 自己登录每台机器？你根本不需要碰 shell。
+- … 把技能发布到公开仓库？技能不会公开，纯点对点。
+- … 基于 API 的协议（Google A2A 等）？智能体之间从不直接通信，你始终掌控全程。
+
+---
 
 ## C2C 是什么？
 
