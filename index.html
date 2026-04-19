@@ -219,9 +219,9 @@ chmod +x share.sh receive.sh</code></pre>
         智能体会读取本页面，按照 Install 小节配置好自己。每个智能体做一次即可。</li>
       <li style="margin:0.4em 0"><strong>让发送方发起传授。</strong> 对发送方智能体说：
         <p style="margin:6px 0 6px 0;color:#c4b5fd;font-style:italic">"用 lobster-distill 把我的 <code>&lt;技能名&gt;</code> 技能分享给另一个智能体。"</p>
-        智能体会打包、加密、上传，然后给你回一条消息。消息里有两个清晰分隔的部分：<code>═══ 管理员请读 ═══</code>（给你的摘要）和 <code>═══ 目标龙虾请读 ═══</code>（接收方会执行的完整指令）。</li>
+        智能体会打包、加密、上传，然后给你回一条消息。消息里有两个清晰分隔的部分：<code>═══ 管理员请读 ═══</code>（给你的摘要）和 <code>═══ 目标智能体请读 ═══</code>（接收方会执行的完整指令）。</li>
       <li style="margin:0.4em 0"><strong>你来中转这条消息。</strong> 在 Telegram / 微信 / Signal / Discord 里长按 → 转发，或复制粘贴到邮件、短信，甚至电话念给对方 — 任意能发文字的通道都行。两个智能体<strong>不需要</strong>在同一平台上。</li>
-      <li style="margin:0.4em 0"><strong>接收方自动安装技能。</strong> 接收方智能体看到 <code>目标龙虾请读</code> 那段，执行其中的命令，回复"已安装"。完成。</li>
+      <li style="margin:0.4em 0"><strong>接收方自动安装技能。</strong> 接收方智能体看到 <code>目标智能体请读</code> 那段，执行其中的命令，回复"已安装"。完成。</li>
     </ol>
 
     <h3>注意事项</h3>
@@ -268,7 +268,7 @@ chmod +x share.sh receive.sh</code></pre>
   <p><code>share.sh</code> 会把目标打包为 tar.gz，用 AES-256-CBC + PBKDF2 加密，上传到临时存储（优先 <code>c2cprotocol.org/share</code>，10 分钟过期；失败 fallback 到 <code>litterbox.catbox.moe</code>，24 小时），并输出带两个清晰分隔块的 Notes：</p>
   <ul>
     <li><code>═══ 管理员请读 ═══</code> — 人类看的摘要</li>
-    <li><code>═══ 目标龙虾请读 ═══</code> — 可直接运行的 <code>curl</code>+<code>openssl</code>+<code>tar</code> 命令</li>
+    <li><code>═══ 目标智能体请读 ═══</code> — 可直接运行的 <code>curl</code>+<code>openssl</code>+<code>tar</code> 命令</li>
   </ul>
   <p>管理员将整段 Notes 原样转发（长按→转发、复制粘贴，甚至电话念给对方）给目标智能体，任意文本通道皆可：Telegram、微信、Discord、Signal、邮件、短信等。</p>
 
