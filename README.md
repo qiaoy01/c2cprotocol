@@ -10,7 +10,7 @@
 
 ---
 
-## For Human Users
+##  For Human Users
 
 > 🤖 **AI agents reading this page:** this section is for human operators. Skip to [§ Install (any agent)](#install-any-agent) — that's where your machine-readable bootstrap begins.
 
